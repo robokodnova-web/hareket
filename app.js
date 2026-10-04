@@ -36,15 +36,34 @@ const routeButtons = positions.map(([x,y,w,h,d], i) => {
   $('route').append(button);
   return button;
 });
+function viewportSize() {
+  const viewport = window.visualViewport;
+  return {width: viewport?.width || window.innerWidth, height: viewport?.height || window.innerHeight,
+    left: viewport?.offsetLeft || 0, top: viewport?.offsetTop || 0};
+}
 function resize() {
-  $('stage').style.setProperty('--scale', Math.min(window.innerWidth / 1920, window.innerHeight / 1080));
+  const {width, height, left, top} = viewportSize();
+  const stage = $('stage');
+  stage.style.setProperty('--scale', Math.min(width / 1920, height / 1080));
+  stage.style.left = `${left + width / 2}px`;
+  stage.style.top = `${top + height / 2}px`;
   updateOrientation();
+}
+let resizeFrame;
+let resizeTimer;
+function scheduleResize() {
+  cancelAnimationFrame(resizeFrame);
+  resizeFrame = requestAnimationFrame(resize);
+  clearTimeout(resizeTimer);
+  // Mobile browser bars and orientation locks settle after the first resize.
+  resizeTimer = setTimeout(resize, 250);
 }
 function isMobileScreen() {
   return window.matchMedia('(max-width: 900px)').matches || window.matchMedia('(pointer: coarse) and (max-width: 1366px)').matches;
 }
 function updateOrientation() {
-  const blocked = isMobileScreen() && window.innerHeight > window.innerWidth;
+  const {width, height} = viewportSize();
+  const blocked = isMobileScreen() && height > width;
   const wasBlocked = !$('orientation-gate').hidden;
   $('orientation-gate').hidden = !blocked;
   $('stage').inert = blocked;
@@ -53,9 +72,11 @@ function updateOrientation() {
   if (blocked && !wasBlocked) $('orientation-fullscreen').focus({preventScroll:true});
   if (!blocked && wasBlocked) ($('cover').hidden ? $('watch') : $('start')).focus({preventScroll:true});
 }
-window.addEventListener('resize', resize);
-window.addEventListener('orientationchange', resize);
-if (window.screen.orientation?.addEventListener) window.screen.orientation.addEventListener('change', resize);
+window.addEventListener('resize', scheduleResize);
+window.addEventListener('orientationchange', scheduleResize);
+window.visualViewport?.addEventListener('resize', scheduleResize);
+window.visualViewport?.addEventListener('scroll', scheduleResize);
+if (window.screen.orientation?.addEventListener) window.screen.orientation.addEventListener('change', scheduleResize);
 resize();
 function playbackUI() {
   const playing = !video.paused && !video.ended;
@@ -195,20 +216,21 @@ video.addEventListener('error', () => {
 });
 let fullscreenBusy = false;
 let autoFullscreenRequested = false;
+function fullscreenElement() { return document.fullscreenElement || document.webkitFullscreenElement; }
 async function enterFullscreen() {
   if (fullscreenBusy) return;
   if (isMobileScreen()) autoFullscreenRequested = true;
   fullscreenBusy = true;
   try {
-    if (!document.fullscreenElement) {
+    if (!fullscreenElement()) {
       if (document.documentElement.requestFullscreen) await document.documentElement.requestFullscreen();
       else if (document.documentElement.webkitRequestFullscreen) await document.documentElement.webkitRequestFullscreen();
     }
-    if (document.fullscreenElement && isMobileScreen() && window.screen.orientation?.lock) {
+    if (fullscreenElement() && isMobileScreen() && window.screen.orientation?.lock) {
       try { await window.screen.orientation.lock('landscape'); } catch { /* The rotate screen remains available when locking is unsupported. */ }
     }
   } catch { /* Continue with the fitted layout if this browser denies full screen. */ }
-  finally { fullscreenBusy = false; resize(); }
+  finally { fullscreenBusy = false; resize(); scheduleResize(); }
 }
 $('orientation-fullscreen').addEventListener('click', () => {
   enterFullscreen();
@@ -219,17 +241,22 @@ document.addEventListener('pointerdown', event => {
   enterFullscreen();
 }, {capture:true});
 $('fullscreen').addEventListener('click', async () => {
-  if (document.fullscreenElement) {
-    try { await document.exitFullscreen(); } catch {}
+  if (fullscreenElement()) {
+    try {
+      if (document.exitFullscreen) await document.exitFullscreen();
+      else if (document.webkitExitFullscreen) await document.webkitExitFullscreen();
+    } catch {}
   } else await enterFullscreen();
 });
-document.addEventListener('fullscreenchange', () => {
-  const full = !!document.fullscreenElement;
+function fullscreenChanged() {
+  const full = !!fullscreenElement();
   $('fullscreen').querySelector('span').textContent = full ? 'Küçült' : 'Tam ekran';
   $('fullscreen').setAttribute('aria-label', full ? 'Tam ekrandan çık' : 'Tam ekranı aç');
   if (!full && window.screen.orientation?.unlock) { try { window.screen.orientation.unlock(); } catch {} }
-  resize();
-});
+  resize(); scheduleResize();
+}
+document.addEventListener('fullscreenchange', fullscreenChanged);
+document.addEventListener('webkitfullscreenchange', fullscreenChanged);
 document.addEventListener('keydown', event => {
   if (!$('orientation-gate').hidden) return;
   if (!$('video-dialog').hidden) {
