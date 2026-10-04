@@ -9,6 +9,15 @@
   <script src="app.js" defer></script>
 </head>
 <body>
+  <section id="orientation-gate" class="orientation-gate" aria-labelledby="orientation-title" hidden>
+    <div class="orientation-card">
+      <svg class="orientation-icon" viewBox="0 0 120 120" aria-hidden="true"><rect x="43" y="28" width="34" height="64" rx="7"/><path d="M53 36h14M56 83h8M25 48a38 38 0 0 1 68-13M93 35V19m0 16H77M95 72a38 38 0 0 1-68 13M27 85v16m0-16h16"/></svg>
+      <h2 id="orientation-title">Telefonunu yatay çevir</h2>
+      <p>Orman macerasını ekranın tamamında görmek için telefonu yatay tut.</p>
+      <button id="orientation-fullscreen" class="orientation-fullscreen">Tam ekranı aç</button>
+      <p id="orientation-hint" class="orientation-hint">Telefonunun otomatik döndürme özelliği açık olsun.</p>
+    </div>
+  </section>
   <main id="stage" class="stage" aria-label="Aynadaki Gölge, Orman Macerası">
     <section id="cover" class="screen cover" aria-label="Kapak">
       <h1 class="cover-title"><span>Aynadaki</span><span>Gölge</span></h1>

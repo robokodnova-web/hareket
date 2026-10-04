@@ -6,7 +6,7 @@ Başlatmak için index.html dosyasını tarayıcıda açın.
 index.html, style.css, app.js, assets ve videolar klasörlerini birlikte tutun.
 Videolar 1.mp4–10.mp4 olarak durak sırasıyla kullanılır.
 
-Başla: Hareket rotasını açar.
+Başla: Hareket rotasını açar ve destekleyen tarayıcılarda otomatik tam ekrana geçer.
 Durak görselleri: İstenen hareketi seçer.
 İzle / Duraklat: Videoyu oynatır veya durdurur.
 Otomatik tekrarla: Hareketi sürekli oynatır; Tekrarlamayı durdur ile kapatılır.
@@ -22,8 +22,11 @@ Kapat / Küçült / Escape: Büyük video penceresinden aynı durağa döner.
 Sağ / sol ok tuşları: Duraklar arasında geçiş yapar.
 
 Tasarım 1920 × 1080 pikseldir. Küçük ekranlarda 16:9 oranı korunarak ölçeklenir.
-900 piksel ve daha dar ekranlarda okunabilir, kaydırılabilir mobil düzen kullanılır.
-Mobil görünüm 360 × 780, 390 × 844 ve 844 × 390 tarayıcı boyutlarında kontrol edildi.
+Telefonda dikey konumda Telefonunu yatay çevir ekranı gösterilir; video durdurulur.
+Yatay konumda bütün 1920 × 1080 tasarım, oranı korunarak ekrana sığar.
+Mobilde ilk dokunuşla tam ekran istenir. Destekleyen tarayıcılarda yön yataya kilitlenir.
+Tam ekranı veya yön kilidini desteklemeyen tarayıcılarda telefonu elle yatay çevirin.
+Tüm durak daireleri eşit büyüklüktedir. 1–5 ve 6–10 sıralarında yazılar aynı hizadadır.
 Tüm arayüz metinleri tek katlı a harfine sahip yazı tipini kullanır.
 Yazı tipi dosyaları assets klasöründedir; internet bağlantısı gerektirmez.
 Referans kapak ve içerik görselleri assets klasörüne kopyalanmıştır.

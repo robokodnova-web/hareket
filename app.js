@@ -21,13 +21,9 @@ const videoWrap = video.parentElement;
 const videoPlaceholder = document.createElement('div');
 videoPlaceholder.className = 'video-placeholder';
 // Coordinates are on the original 1920 × 1080 design canvas.
-const positions = [
-  [52, 299, 235, 256, 235], [335, 317, 199, 235, 199],
-  [584, 318, 199, 235, 199], [834, 322, 199, 233, 199],
-  [1081, 332, 198, 222, 198], [76, 643, 203, 230, 203],
-  [332, 656, 197, 220, 197], [584, 637, 197, 234, 197],
-  [836, 646, 197, 236, 197], [1087, 637, 197, 235, 197]
-];
+const positions = Array.from({length: 10}, (_, i) => [
+  64 + (i % 5) * 244, i < 5 ? 310 : 644, 210, 245, 210
+]);
 const routeButtons = positions.map(([x,y,w,h,d], i) => {
   const button = document.createElement('button');
   button.className = 'stop' + (i === 0 ? ' first' : '');
@@ -36,15 +32,30 @@ const routeButtons = positions.map(([x,y,w,h,d], i) => {
   button.innerHTML = `<span class="stop-portrait"><img src="assets/durak-${i + 1}.jpg" alt=""></span><span class="ring" style="left:0;top:0;width:${d}px;height:${d}px"></span><span class="stop-number">${i + 1}</span><span class="stop-label">${stops[i][0]}</span>`;
   button.addEventListener('click', () => {
     selectStop(i);
-    if (window.matchMedia('(max-width: 900px)').matches) document.querySelector('.activity').scrollIntoView({behavior:'smooth',block:'start'});
   });
   $('route').append(button);
   return button;
 });
 function resize() {
   $('stage').style.setProperty('--scale', Math.min(window.innerWidth / 1920, window.innerHeight / 1080));
+  updateOrientation();
+}
+function isMobileScreen() {
+  return window.matchMedia('(max-width: 900px)').matches || window.matchMedia('(pointer: coarse) and (max-width: 1366px)').matches;
+}
+function updateOrientation() {
+  const blocked = isMobileScreen() && window.innerHeight > window.innerWidth;
+  const wasBlocked = !$('orientation-gate').hidden;
+  $('orientation-gate').hidden = !blocked;
+  $('stage').inert = blocked;
+  $('stage').setAttribute('aria-hidden', String(blocked));
+  if (blocked) { playRequest++; video.pause(); }
+  if (blocked && !wasBlocked) $('orientation-fullscreen').focus({preventScroll:true});
+  if (!blocked && wasBlocked) ($('cover').hidden ? $('watch') : $('start')).focus({preventScroll:true});
 }
 window.addEventListener('resize', resize);
+window.addEventListener('orientationchange', resize);
+if (window.screen.orientation?.addEventListener) window.screen.orientation.addEventListener('change', resize);
 resize();
 function playbackUI() {
   const playing = !video.paused && !video.ended;
@@ -101,6 +112,8 @@ function showCover() {
   $('start').focus();
 }
 function startAdventure() {
+  if (!$('orientation-gate').hidden) return;
+  enterFullscreen();
   $('cover').hidden = true;
   $('adventure').hidden = false;
   selectStop(0);
@@ -180,21 +193,45 @@ video.addEventListener('error', () => {
   $('video-message').textContent = 'Video bulunamadı. HTML dosyası ile videolar klasörünün yan yana olduğundan emin ol.';
   $('video-message').hidden = false;
 });
-$('fullscreen').addEventListener('click', async () => {
+let fullscreenBusy = false;
+let autoFullscreenRequested = false;
+async function enterFullscreen() {
+  if (fullscreenBusy) return;
+  if (isMobileScreen()) autoFullscreenRequested = true;
+  fullscreenBusy = true;
   try {
-    if (document.fullscreenElement) await document.exitFullscreen();
-    else if (document.documentElement.requestFullscreen) await document.documentElement.requestFullscreen();
-    else if (video.webkitEnterFullscreen && video.readyState) video.webkitEnterFullscreen();
-    else $('fullscreen').querySelector('span').textContent = 'Desteklenmiyor';
-  } catch { $('fullscreen').querySelector('span').textContent = window.matchMedia('(max-width: 900px)').matches ? 'Desteklenmiyor' : 'F11 ile aç'; }
+    if (!document.fullscreenElement) {
+      if (document.documentElement.requestFullscreen) await document.documentElement.requestFullscreen();
+      else if (document.documentElement.webkitRequestFullscreen) await document.documentElement.webkitRequestFullscreen();
+    }
+    if (document.fullscreenElement && isMobileScreen() && window.screen.orientation?.lock) {
+      try { await window.screen.orientation.lock('landscape'); } catch { /* The rotate screen remains available when locking is unsupported. */ }
+    }
+  } catch { /* Continue with the fitted layout if this browser denies full screen. */ }
+  finally { fullscreenBusy = false; resize(); }
+}
+$('orientation-fullscreen').addEventListener('click', () => {
+  enterFullscreen();
+});
+document.addEventListener('pointerdown', event => {
+  if (!isMobileScreen() || autoFullscreenRequested || event.target.closest('#fullscreen,#orientation-fullscreen')) return;
+  autoFullscreenRequested = true;
+  enterFullscreen();
+}, {capture:true});
+$('fullscreen').addEventListener('click', async () => {
+  if (document.fullscreenElement) {
+    try { await document.exitFullscreen(); } catch {}
+  } else await enterFullscreen();
 });
 document.addEventListener('fullscreenchange', () => {
   const full = !!document.fullscreenElement;
   $('fullscreen').querySelector('span').textContent = full ? 'Küçült' : 'Tam ekran';
   $('fullscreen').setAttribute('aria-label', full ? 'Tam ekrandan çık' : 'Tam ekranı aç');
+  if (!full && window.screen.orientation?.unlock) { try { window.screen.orientation.unlock(); } catch {} }
   resize();
 });
 document.addEventListener('keydown', event => {
+  if (!$('orientation-gate').hidden) return;
   if (!$('video-dialog').hidden) {
     if (event.key === 'Escape') { event.preventDefault(); closeVideo(); }
     if (event.key === 'Tab') {
