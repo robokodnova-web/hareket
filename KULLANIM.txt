@@ -31,5 +31,16 @@ Tüm arayüz metinleri tek katlı a harfine sahip yazı tipini kullanır.
 Yazı tipi dosyaları assets klasöründedir; internet bağlantısı gerektirmez.
 Referans kapak ve içerik görselleri assets klasörüne kopyalanmıştır.
 Kapak ve içerik arka planlarından metinler Imagegen ile kaldırılmıştır.
-Son arka planlar: assets/kapak-yazisiz.png ve assets/icerik-yazisiz.png.
+Son arka planlar: assets/kapak-temiz-v2.png ve assets/icerik-temiz-v2.png.
 Uygulamadaki başlık, tabela ve düğme yazıları HTML metnidir.
+
+2026-10-04 mobil ve arka plan düzeltmesi:
+Kapaktaki gömülü sarı Başla düğmesi kaldırıldı; düğme tek HTML/CSS katmanıdır.
+İçerik arka planındaki video resmi, panel, düğmeler ve üst sağ rozetler kaldırıldı.
+Görsel düzenleme: yerleşik Imagegen aracı. İstek: sahneyi ve boş ahşap tabelaları koru, gömülü arayüz unsurlarını kaldır ve boşlukları ormanla tamamla.
+Tam ekran ve yön değişiminde görünür tarayıcı alanı yeniden ölçülür; 16:9 tasarım kırpılmadan ortalanır.
+Telefon ekranı 16:9 değilse yanlarda boşluk kalması normaldir.
+GitHub Pages güncellemesinde index.html, style.css, app.js ve iki yeni arka plan görselini birlikte yükleyin.
+CSS ve JavaScript sürüm bağlantıları eski önbelleğin kullanılmasını önler.
+Doğrulama: Chrome mobil boyut emülasyonu, 844x390 ve 915x412 yatay, 390x844 dikey, tam ekran giriş/çıkış, büyük video ve on hikaye metni. Fiziksel telefonda test yapılmadı.
+
