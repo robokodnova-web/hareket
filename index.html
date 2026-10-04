@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#073d25">
+  <title>Aynadaki Gölge — Orman Macerası</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <main id="stage" class="stage" aria-label="Aynadaki Gölge, Orman Macerası">
+    <section id="cover" class="screen cover" aria-label="Kapak">
+      <h1 class="cover-title"><span>Aynadaki</span><span>Gölge</span></h1>
+      <div class="cover-subtitle">Orman Macerası</div>
+      <div class="cover-tagline">Hareketleri izle, sen de yap!</div>
+      <div class="cover-count">10 durak · 10 hareket</div>
+      <div class="cover-safety">Etrafında hareket edebileceğin boş bir alan olsun.</div>
+      <p class="sr-only">Hareketleri izle, sen de yap! 10 durak, 10 hareket. Etrafında hareket edebileceğin boş bir alan olsun.</p>
+      <button id="start" class="start image-button" aria-label="Başla"><svg class="mobile-start-icon" viewBox="0 0 32 32" aria-hidden="true"><path d="M9 4v24l20-12z"/></svg><span class="start-label">Başla</span></button>
+    </section>
+    <section id="adventure" class="screen adventure" aria-label="Hareket rotamız" hidden>
+      <button id="home" class="home image-button" aria-label="Kapak sayfasına dön" title="Kapak sayfasına dön"></button>
+      <h1 class="adventure-title">Aynadaki <span>Gölge</span></h1>
+      <div class="adventure-subtitle">Orman Macerası</div>
+      <div class="route-title">Hareket rotamız</div>
+      <div class="route-instruction">Bir durağa dokun, hareketi izle ve sen de yap.</div>
+      <button id="home-button" class="home-button" aria-label="Ana sayfaya dön"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11 12 3l9 8M5 10v11h5v-7h4v7h5V10"/></svg><span>Ana sayfa</span></button>
+      <button id="fullscreen" class="fullscreen" aria-label="Tam ekranı aç">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 3H3v5M16 3h5v5M21 16v5h-5M8 21H3v-5"/></svg>
+        <span>Tam ekran</span>
+      </button>
+      <div id="counter" class="counter" aria-live="polite">1 / 10 durak</div>
+      <nav id="route" aria-label="10 hareket durağı"></nav>
+      <section class="activity" aria-labelledby="activity-title">
+        <div id="badge" class="badge">1. DURAK</div>
+        <h2 id="activity-title">Çantanı tak</h2>
+        <div class="video-wrap">
+          <video id="video" playsinline preload="metadata" poster="assets/durak-1.jpg" aria-label="Çantanı tak hareket videosu"></video>
+          <button id="video-play" class="video-play" aria-label="Videoyu oynat"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M17 9v30l25-15z"/></svg></button>
+          <div id="video-message" class="video-message" role="status" hidden></div>
+          <div class="video-progress" aria-hidden="true"><div id="video-progress-fill"></div></div>
+          <button id="video-expand" class="video-expand" aria-label="Videoyu genişlet"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 3H3v5M16 3h5v5M21 16v5h-5M8 21H3v-5"/></svg><span>Genişlet</span></button>
+        </div>
+        <p id="instructions" class="instructions">Sabah erkenden sırt çantama yiyeceklerimi doldurup ormanın girişine geldim.</p>
+        <div class="actions">
+          <button id="watch" class="action watch"><svg viewBox="0 0 32 32" aria-hidden="true"><path id="watch-icon" d="M9 4v24l20-12z"/></svg><span>İzle</span></button>
+          <button id="replay" class="action replay" aria-pressed="false"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M26 11A11 11 0 0 0 6 8L3 12m0-8v8h8M6 21a11 11 0 0 0 20 3l3-4m0 8v-8h-8"/></svg><span>Otomatik tekrarla</span></button>
+          <button id="next" class="action next"><svg viewBox="0 0 32 32" aria-hidden="true"><ellipse cx="11" cy="10" rx="5" ry="8" transform="rotate(20 11 10)"/><ellipse cx="23" cy="19" rx="5" ry="8" transform="rotate(20 23 19)"/><path d="M5 22q4-2 8 2l-2 5q-6 0-6-7M18 30q3-2 7 0"/></svg><span>Sıradaki</span></button>
+        </div>
+        <p class="activity-footer">İzle · Taklit et · Devam et</p>
+      </section>
+      <div id="video-dialog" class="video-dialog" role="dialog" aria-modal="true" aria-labelledby="video-dialog-title" hidden>
+        <h2 id="video-dialog-title" class="sr-only">Videoyu büyük izle</h2>
+        <div class="video-dialog-card">
+          <button id="video-close" class="video-close" aria-label="Büyük videoyu kapat">✕ Kapat</button>
+          <div id="video-dialog-host"></div>
+        </div>
+      </div>
+      <div id="completion" class="completion" role="dialog" aria-modal="true" aria-labelledby="completion-title" hidden>
+        <div class="completion-card">
+          <div class="celebration" aria-hidden="true">★</div>
+          <h2 id="completion-title">Yaşasın!</h2>
+          <p>Orman macerasının sonuna geldin.<br>Hareketlere eşlik ettiğin için teşekkürler!</p>
+          <button id="restart" class="action next">Yeniden başla</button>
+          <button id="back-cover" class="action replay">Kapağa dön</button>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

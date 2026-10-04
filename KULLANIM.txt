@@ -1,0 +1,32 @@
+Aynadaki Gölge — Orman Macerası
+
+Başlatmak için index.html dosyasını tarayıcıda açın.
+İnternet bağlantısı veya kurulum gerekmez.
+
+index.html, style.css, app.js, assets ve videolar klasörlerini birlikte tutun.
+Videolar 1.mp4–10.mp4 olarak durak sırasıyla kullanılır.
+
+Başla: Hareket rotasını açar.
+Durak görselleri: İstenen hareketi seçer.
+İzle / Duraklat: Videoyu oynatır veya durdurur.
+Otomatik tekrarla: Hareketi sürekli oynatır; Tekrarlamayı durdur ile kapatılır.
+Tam izlenen duraklar yeşil halka ve onay işaretiyle gösterilir.
+Alt sıra soldan sağa 6, 7, 8, 9, 10 olarak sıralanır.
+Sıradaki: Bir sonraki durağa geçer.
+Tamamla: Son durakta bitiş ekranını açar.
+Üstteki logo: Kapağa döner.
+Ana sayfa: Videoyu durdurup kapak sayfasına döner.
+Tam ekran: Tam ekran görünümünü açar veya kapatır.
+Genişlet: Video oynatılmaya başladıktan sonra görünür, büyük video penceresini açar.
+Kapat / Küçült / Escape: Büyük video penceresinden aynı durağa döner.
+Sağ / sol ok tuşları: Duraklar arasında geçiş yapar.
+
+Tasarım 1920 × 1080 pikseldir. Küçük ekranlarda 16:9 oranı korunarak ölçeklenir.
+900 piksel ve daha dar ekranlarda okunabilir, kaydırılabilir mobil düzen kullanılır.
+Mobil görünüm 360 × 780, 390 × 844 ve 844 × 390 tarayıcı boyutlarında kontrol edildi.
+Tüm arayüz metinleri tek katlı a harfine sahip yazı tipini kullanır.
+Yazı tipi dosyaları assets klasöründedir; internet bağlantısı gerektirmez.
+Referans kapak ve içerik görselleri assets klasörüne kopyalanmıştır.
+Kapak ve içerik arka planlarından metinler Imagegen ile kaldırılmıştır.
+Son arka planlar: assets/kapak-yazisiz.png ve assets/icerik-yazisiz.png.
+Uygulamadaki başlık, tabela ve düğme yazıları HTML metnidir.
