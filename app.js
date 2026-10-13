@@ -4,7 +4,7 @@ const stops = [
   ['Nefes al, yürü', 'Derin bir nefes alıp yürümeye başladım.'],
   ['Zıpla', 'Yolun ortasında devrilmiş, büyük bir ağaç gövdesi çıkınca durdum ve karşıya geçmek için onun üzerinden zıpladım.'],
   ['Dengeni koru', 'Hemen ardından başımın üstünden vınlayarak geçen çılgın bir arı sürüsü yüzünden dengemi kaybettim, yere düşmemek için kollarımı iki yana açıp sallandım.'],
-  ['Çömel', 'Sağdaki çalılıkların arkasına gizlendim. Görünmemek için iyice küçüldüm, arıların gitmesini bekledim.'],
+  ['Eğil', 'Sağdaki çalılıkların arkasına gizlendim. Görünmemek için iyice küçüldüm, arıların gitmesini bekledim.'],
   ['Tırman', 'Ayağa kalkıp yoluma devam ederken bu kez de karşıma sarp bir kayalık çıktı. İpe tutunup yukarı tırmandım.'],
   ['Üşüdün mü?', 'Zirveye çıktığımda rüzgâr o kadar şiddetli esiyordu ki saçlarım savruldu, ben de kollarımı bağlayıp soğuktan korunmaya çalıştım.'],
   ['Köprüden geç', 'Vadideki iki tepeyi birbirine bağlayan tahta köprüden karşıya geçtim.'],

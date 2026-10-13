@@ -45,6 +45,9 @@
 .adventure-title span{color:#ffe335}
 .adventure-subtitle{left:832px;top:118px;width:340px;height:55px;font-size:30px;color:#492507}
 .route-title{left:87px;top:189px;width:422px;height:63px;font-size:44px;color:#fff;text-shadow:0 3px 0 #593110}
+.route-title{isolation:isolate}
+/* Restore only the wooden sign from the scene as an opaque foreground layer. */
+.route-title::before{content:"";position:absolute;left:-87px;top:-189px;width:1920px;height:1080px;z-index:-1;background:url('assets/icerik-temiz-v2.png') center/1920px 1080px no-repeat;clip-path:polygon(60px 179px,95px 174px,164px 170px,325px 174px,492px 183px,517px 190px,527px 204px,522px 214px,527px 229px,522px 240px,527px 250px,522px 263px,509px 270px,460px 268px,326px 260px,182px 260px,83px 267px,62px 265px,53px 254px,54px 245px,62px 237px,54px 228px,53px 218px,62px 211px,54px 202px,55px 190px)}
 .route-instruction{left:515px;top:955px;width:600px;height:74px;font-size:26px;color:#492507}
 .start{display:flex;align-items:center;justify-content:center;gap:42px;border:6px solid #e5a50b;background:linear-gradient(#ffed51,#ffd016);box-shadow:inset 0 5px 0 #fff8ba,0 8px 0 #b98009}
 .start:hover{background:linear-gradient(#fff477,#ffda24);box-shadow:inset 0 5px 0 #fff8ba,0 8px 0 #b98009,0 0 35px #fff48a}
